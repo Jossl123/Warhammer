@@ -7,26 +7,25 @@ window.addEventListener('mouseup', function() {
     mouseIsDown = false;
 });
 
+var canvas = document.getElementById('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+var ctx = canvas.getContext('2d');
 
-function loadFigList(army) {
-    var armyList = []
-    Object.entries(army).forEach(element => {
-        for (let i = 0; i < element[1]; i++) {
-            armyList.push(element[0])
-        }
-    });
-    return armyList
-}
+// function loadFigList(army) {
+//     var armyList = []
+//     Object.entries(army).forEach(element => {
+//         for (let i = 0; i < element[1]; i++) {
+//             armyList.push(new element[0]())
+//         }
+//     });
+//     return armyList
+// }
 
 var team1 = new function() {
     this.name = "Space Marines";
-    this.army = {
-        "summoner": 3,
-        "chaos": 2,
-        "super": 1
-    };
-    this.armyListToPlace = loadFigList(this.army);
-    this.armyList = this.armyListToPlace
+    this.army = [];
+    this.armyListToPlace = [new Summoner(),new Summoner(), new Summoner(), new Chaos(), new Chaos(), new Supe()];
 }
 
 var game = {
@@ -47,7 +46,12 @@ function MouseDown(e) {
 }
 
 function placeFig(team, e) {
+    if (team.armyListToPlace.length == 0)return
     var X = e.clientX + game.offsetX
     var Y = e.clientY + game.offsetY
-    console.log(team.armyListToPlace.pop(), X, Y)
+    var figName = team.armyListToPlace.pop()
+    ctx.arc(X, Y, 20, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.closePath()
+    
 }
